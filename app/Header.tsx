@@ -4,7 +4,7 @@ import Link from "next/link"
 import LogoutButton from "./LogoutButton"
 
 export default function Header() {
-  const ssesion = false
+  const ssesion = true
 
   if (ssesion) {
     return (
