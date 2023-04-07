@@ -1,11 +1,16 @@
 "use client"
 
+import { Message } from "@/type"
 import { FormEvent, useState } from "react"
+import { v4 as uuid } from "uuid"
+import useSWR from "swr"
+import fetcher from "@/utils/fetchMessages"
 
 export default function ChatInput() {
   const [input, setInput] = useState("")
+  const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher)
 
-  const handleMessageSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!input) return
@@ -13,12 +18,40 @@ export default function ChatInput() {
     const messageToSend = input
 
     setInput("")
+
+    const id = uuid()
+
+    const message: Message = {
+      id,
+      message: messageToSend,
+      createdAt: Date.now(),
+      username: "leo",
+      profilePic: "https://avatars.githubusercontent.com/u/11247099?v=4",
+      email: "vpvm96@naver.com",
+    }
+
+    const handleUplodatMessage = async () => {
+      const data = await fetch("/api/addMessage", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      }).then((res) => res.json())
+
+      return [data.message, ...messages!]
+    }
+
+    await mutate(handleUplodatMessage, {
+      optimisticData: [message, ...messages!],
+      rollbackOnError: true,
+    })
   }
 
   return (
     <form
       onSubmit={handleMessageSubmit}
-      className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100"
+      className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t bg-white border-gray-100"
     >
       <input
         type="text"
