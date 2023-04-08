@@ -1,5 +1,5 @@
+import { Message } from "@/typings"
 import Image from "next/image"
-import { Message } from "@/type"
 
 type Props = {
   key: string
@@ -32,7 +32,7 @@ export default function MessageComponent({ message }: Props) {
 
         <div className="flex items-end">
           <div
-            className={`px-3 py-2 rounded-lg w-fit text-white bg-red-400 ${
+            className={`px-3 py-2 rounded-lg w-fit text-white ${
               isUser ? "bg-blue-400 ml-auto order-2" : "bg-red-400"
             }`}
           >
@@ -44,7 +44,7 @@ export default function MessageComponent({ message }: Props) {
               isUser && "text-right"
             }`}
           >
-            {new Date(message.createdAt).toLocaleString()}
+            {new Date(message.created_at).toLocaleString()}
           </p>
         </div>
       </div>
