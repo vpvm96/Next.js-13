@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import redis from "@/redis"
-import { Message } from "@/type"
+import { Message } from "@/typings"
 
 type Data = {
   messages: Message[]
@@ -22,7 +22,7 @@ export default async function handler(
   const messagesRes = await redis.hvals("messages")
   const messages: Message[] = messagesRes
     .map((message) => JSON.parse(message))
-    .sort((a, b) => b.createdAt - a.createdAt)
+    .sort((a, b) => b.created_at - a.created_at)
 
   res.status(200).json({ messages })
 }

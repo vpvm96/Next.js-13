@@ -1,4 +1,4 @@
-import { Message } from "@/type"
+import { Message } from "@/typings"
 
 const fetcher = async () => {
   const res = await fetch("/api/getMessages")
