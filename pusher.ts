@@ -2,14 +2,14 @@ import Pusher from "pusher"
 import ClientPusher from "pusher-js"
 
 export const serverPusher = new Pusher({
-  appId: "1581287",
-  key: "8d0d25ad7838d1137035",
-  secret: "384e2038baf6e3969c90",
+  appId: process.env.PUSHER_APP_ID as string,
+  key: process.env.PUSHER_KEY as string,
+  secret: process.env.PUSHER_SECRET as string,
   cluster: "ap3",
   useTLS: true,
 })
 
-export const clientPusher = new ClientPusher("8d0d25ad7838d1137035", {
+export const clientPusher = new ClientPusher(process.env.PUSHER_KEY as string, {
   cluster: "ap3",
   forceTLS: true,
 })
